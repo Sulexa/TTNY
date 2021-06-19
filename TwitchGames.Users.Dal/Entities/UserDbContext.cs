@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using TwitchGames.Users.Dal.Entities.UserEntity;
 
 namespace TwitchGames.Users.Dal.Entities
@@ -10,6 +11,16 @@ namespace TwitchGames.Users.Dal.Entities
         {
         }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite(@"Data Source=user.db");
+            => options.UseSqlite(@"Data Source=D:\\user.db");
+    }
+    public class UserContextFactory : IDesignTimeDbContextFactory<UserDbContext>
+    {
+        public UserDbContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
+            optionsBuilder.UseSqlite("Data Source=D:\\user.db");
+
+            return new UserDbContext(optionsBuilder.Options);
+        }
     }
 }

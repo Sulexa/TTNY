@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using TwitchGames.Users.Dal.Entities;
+using TwitchGames.Users.Dal.Entities.UserEntity;
+using TwitchGames.Users.Dal.Interfaces;
 using TwitchLib.Client;
 using TwitchLib.Client.Enums;
 using TwitchLib.Client.Events;
@@ -15,9 +18,16 @@ namespace TwitchGames.TwitchChat.Services
         private const string CHANNEL = "Sulexa";
 
         private readonly TwitchClient _client;
+        private readonly IUserRepository _userRepository;
+        private readonly UserDbContext _userDbContext;
 
-        public Bot(string twitchUsername, string twitchAccessToken)
+        public Bot(string twitchUsername, string twitchAccessToken, IUserRepository userRepository, UserDbContext userDbContext)
         {
+            this._userRepository = userRepository;
+            this._userDbContext = userDbContext;
+
+
+
             ConnectionCredentials credentials = new(twitchUsername, twitchAccessToken);
             var clientOptions = new ClientOptions
             {
@@ -57,6 +67,15 @@ namespace TwitchGames.TwitchChat.Services
             switch (e.Command.CommandText)
             {
                 case ("join"):
+                    this._userRepository.Add(new User
+                    {
+                        TwitchId = e.Command.ChatMessage.UserId,
+                        DisplayName = e.Command.ChatMessage.DisplayName,
+                        ColorHex = e.Command.ChatMessage.ColorHex
+                    });
+                    _userDbContext.SaveChanges();
+
+
                     Console.WriteLine($"{e.Command.ChatMessage.DisplayName} joined the game!");
                     break;
                 default:

@@ -2,6 +2,8 @@
 using System;
 using System.Threading.Tasks;
 using TwitchGames.TwitchChat.Services;
+using TwitchGames.Users.Dal.Entities;
+using TwitchGames.Users.Dal.Repositories;
 
 namespace TwitchGames.TwitchChat
 {
@@ -16,10 +18,13 @@ namespace TwitchGames.TwitchChat
                 .AddEnvironmentVariables();
 
             var config = builder.Build();
+            var userDbContextFactory = new UserContextFactory();
+            using (var dbContext = userDbContextFactory.CreateDbContext(Array.Empty<string>()))
+            {
+                var bot = new Bot(config["Twitch:Username"], config["Twitch:AccessToken"], new UserRepository(dbContext), dbContext);
+                Console.ReadLine();
+            }
 
-            var bot = new Bot(config["Twitch:Username"], config["Twitch:AccessToken"]);
-
-            Console.ReadLine();
         }
     }
 }
