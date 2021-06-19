@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.TwitchChat", "TwitchGames.TwitchChat\TwitchGames.TwitchChat.csproj", "{360B2006-976B-4190-9E9F-9EB8A834B2B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.TwitchChat", "TwitchGames.TwitchChat\TwitchGames.TwitchChat.csproj", "{360B2006-976B-4190-9E9F-9EB8A834B2B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TwitchGames.Users", "TwitchGames.Users", "{D9DA834F-D3EB-4EE8-8878-9E805F6C76B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Users.Dal", "TwitchGames.Users.Dal\TwitchGames.Users.Dal.csproj", "{7F08EF96-712A-47DC-AC16-A89928010E4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{360B2006-976B-4190-9E9F-9EB8A834B2B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{360B2006-976B-4190-9E9F-9EB8A834B2B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{360B2006-976B-4190-9E9F-9EB8A834B2B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F08EF96-712A-47DC-AC16-A89928010E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F08EF96-712A-47DC-AC16-A89928010E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F08EF96-712A-47DC-AC16-A89928010E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F08EF96-712A-47DC-AC16-A89928010E4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7F08EF96-712A-47DC-AC16-A89928010E4A} = {D9DA834F-D3EB-4EE8-8878-9E805F6C76B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FFFC01A6-846E-4098-B22C-81E4D4B38FA4}

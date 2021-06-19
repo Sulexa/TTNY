@@ -12,6 +12,8 @@ namespace TwitchGames.TwitchChat.Services
 {
     public class Bot
     {
+        private const string CHANNEL = "Sulexa";
+
         private readonly TwitchClient _client;
 
         public Bot(string twitchUsername, string twitchAccessToken)
@@ -24,38 +26,52 @@ namespace TwitchGames.TwitchChat.Services
             };
             WebSocketClient customClient = new(clientOptions);
             _client = new TwitchClient(customClient);
-            _client.Initialize(credentials, "Sulexa");
+            _client.Initialize(credentials, CHANNEL);
 
             _client.OnLog += Client_OnLog;
             _client.OnJoinedChannel += Client_OnJoinedChannel;
-            _client.OnMessageReceived += Client_OnMessageReceived;
             _client.OnConnected += Client_OnConnected;
+            _client.OnChatCommandReceived += Client_OnChatCommandReceived;
 
             _client.Connect();
         }
 
-        private void Client_OnLog(object sender, OnLogArgs e)
+        private void Client_OnLog(object? sender, OnLogArgs e)
         {
             Console.WriteLine($"{e.DateTime}: {e.BotUsername} - {e.Data}");
         }
 
-        private void Client_OnConnected(object sender, OnConnectedArgs e)
+        private void Client_OnConnected(object? sender, OnConnectedArgs e)
         {
             Console.WriteLine($"Connected to {e.AutoJoinChannel}");
         }
 
-        private void Client_OnJoinedChannel(object sender, OnJoinedChannelArgs e)
+        private void Client_OnJoinedChannel(object? sender, OnJoinedChannelArgs e)
         {
             Console.WriteLine("TwitchGames up and running!");
             _client.SendMessage(e.Channel, "TwitchGames up and running!");
         }
 
-        private void Client_OnMessageReceived(object sender, OnMessageReceivedArgs e)
+        private void Client_OnChatCommandReceived(object? sender, OnChatCommandReceivedArgs e)
         {
-            Console.WriteLine(e.ChatMessage.Message);
+            switch (e.Command.CommandText)
+            {
+                case ("join"):
+                    Console.WriteLine($"{e.Command.ChatMessage.DisplayName} joined the game!");
+                    break;
+                default:
+                    break;
+            }
             //if (e.ChatMessage.Message.Contains("badword"))
             //    _client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
         }
+
+        //private void Client_OnMessageReceived(object sender, OnMessageReceivedArgs e)
+        //{
+        //    Console.WriteLine(e.ChatMessage.Message);
+        //    //if (e.ChatMessage.Message.Contains("badword"))
+        //    //    _client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
+        //}
 
         //private void Client_OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         //{
