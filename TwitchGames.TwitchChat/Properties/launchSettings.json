@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "TwitchGames.TwitchChat": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "development"
+      },
+      "nativeDebugging": false
+    }
+  }
+}

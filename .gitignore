@@ -43,3 +43,5 @@ _NCrunch_*
 *.crunch.xml
 *.crunch.xml
 nCrunchTemp_*
+
+TwitchGames.TwitchChat/appsettings.development.json
