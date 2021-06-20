@@ -1,34 +1,30 @@
 ﻿using System;
-using System.Threading.Tasks;
+using TwitchGames.Shared.UnitOfWorkLibrary.Interfaces;
+using TwitchGames.TwitchChat.Models;
 using TwitchGames.Users.Dal.Entities;
 using TwitchGames.Users.Dal.Entities.UserEntity;
 using TwitchGames.Users.Dal.Interfaces;
 using TwitchLib.Client;
-using TwitchLib.Client.Enums;
 using TwitchLib.Client.Events;
-using TwitchLib.Client.Extensions;
 using TwitchLib.Client.Models;
 using TwitchLib.Communication.Clients;
 using TwitchLib.Communication.Models;
 
 namespace TwitchGames.TwitchChat.Services
 {
-    public class Bot
+    public class Bot: IBot
     {
-        private const string CHANNEL = "Sulexa";
-
         private readonly TwitchClient _client;
+        private readonly ITwitchConfig _twitchConfig;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
-        private readonly UserDbContext _userDbContext;
 
-        public Bot(string twitchUsername, string twitchAccessToken, IUserRepository userRepository, UserDbContext userDbContext)
+        public Bot(ITwitchConfig twitchConfig, IUnitOfWork unitOfWork, IUserRepository userRepository)
         {
+            this._twitchConfig = twitchConfig;
+            this._unitOfWork = unitOfWork;
             this._userRepository = userRepository;
-            this._userDbContext = userDbContext;
 
-
-
-            ConnectionCredentials credentials = new(twitchUsername, twitchAccessToken);
             var clientOptions = new ClientOptions
             {
                 MessagesAllowedInPeriod = 750,
@@ -36,7 +32,13 @@ namespace TwitchGames.TwitchChat.Services
             };
             WebSocketClient customClient = new(clientOptions);
             _client = new TwitchClient(customClient);
-            _client.Initialize(credentials, CHANNEL);
+
+        }
+
+        public void Connect()
+        {
+            ConnectionCredentials credentials = new(_twitchConfig.Username, _twitchConfig.AccessToken);
+            _client.Initialize(credentials, _twitchConfig.Channel);
 
             _client.OnLog += Client_OnLog;
             _client.OnJoinedChannel += Client_OnJoinedChannel;
@@ -73,7 +75,7 @@ namespace TwitchGames.TwitchChat.Services
                         DisplayName = e.Command.ChatMessage.DisplayName,
                         ColorHex = e.Command.ChatMessage.ColorHex
                     });
-                    _userDbContext.SaveChanges();
+                    this._unitOfWork.Complete();
 
 
                     Console.WriteLine($"{e.Command.ChatMessage.DisplayName} joined the game!");

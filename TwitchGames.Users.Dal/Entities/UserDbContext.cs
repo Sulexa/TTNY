@@ -12,6 +12,12 @@ namespace TwitchGames.Users.Dal.Entities
         }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite(@"Data Source=D:\\user.db");
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<User>());
+        }
     }
     public class UserContextFactory : IDesignTimeDbContextFactory<UserDbContext>
     {

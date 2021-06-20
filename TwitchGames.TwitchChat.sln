@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.TwitchChat", "T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TwitchGames.Users", "TwitchGames.Users", "{D9DA834F-D3EB-4EE8-8878-9E805F6C76B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Users.Dal", "TwitchGames.Users.Dal\TwitchGames.Users.Dal.csproj", "{7F08EF96-712A-47DC-AC16-A89928010E4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.Users.Dal", "TwitchGames.Users.Dal\TwitchGames.Users.Dal.csproj", "{7F08EF96-712A-47DC-AC16-A89928010E4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TwitchGames.Shared", "TwitchGames.Shared", "{C6F331E1-1001-4A8B-BB72-951D054DE716}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Shared.UnitOfWork", "TwitchGames.Shared.UnitOfWork\TwitchGames.Shared.UnitOfWork.csproj", "{F82CA7FF-54D0-4A42-83B1-86083D81E15D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +27,17 @@ Global
 		{7F08EF96-712A-47DC-AC16-A89928010E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F08EF96-712A-47DC-AC16-A89928010E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F08EF96-712A-47DC-AC16-A89928010E4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F82CA7FF-54D0-4A42-83B1-86083D81E15D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F82CA7FF-54D0-4A42-83B1-86083D81E15D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F82CA7FF-54D0-4A42-83B1-86083D81E15D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F82CA7FF-54D0-4A42-83B1-86083D81E15D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7F08EF96-712A-47DC-AC16-A89928010E4A} = {D9DA834F-D3EB-4EE8-8878-9E805F6C76B8}
+		{F82CA7FF-54D0-4A42-83B1-86083D81E15D} = {C6F331E1-1001-4A8B-BB72-951D054DE716}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FFFC01A6-846E-4098-B22C-81E4D4B38FA4}
