@@ -1,9 +1,8 @@
-﻿using System;
-using TwitchGames.Shared.UnitOfWorkLibrary.Interfaces;
+﻿using MassTransit;
+using Microsoft.Extensions.Logging;
+using System;
+using TwitchGames.Shared.Bus;
 using TwitchGames.TwitchChat.Models;
-using TwitchGames.Users.Dal.Entities;
-using TwitchGames.Users.Dal.Entities.UserEntity;
-using TwitchGames.Users.Dal.Interfaces;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
@@ -16,14 +15,14 @@ namespace TwitchGames.TwitchChat.Services
     {
         private readonly TwitchClient _client;
         private readonly ITwitchConfig _twitchConfig;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IUserRepository _userRepository;
+        private readonly ILogger<Bot> _logger;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public Bot(ITwitchConfig twitchConfig, IUnitOfWork unitOfWork, IUserRepository userRepository)
+        public Bot(ITwitchConfig twitchConfig, ILogger<Bot> logger, IPublishEndpoint publishEndpoint)
         {
             this._twitchConfig = twitchConfig;
-            this._unitOfWork = unitOfWork;
-            this._userRepository = userRepository;
+            this._logger = logger;
+            this._publishEndpoint = publishEndpoint;
 
             var clientOptions = new ClientOptions
             {
@@ -32,7 +31,6 @@ namespace TwitchGames.TwitchChat.Services
             };
             WebSocketClient customClient = new(clientOptions);
             _client = new TwitchClient(customClient);
-
         }
 
         public void Connect()
@@ -50,17 +48,17 @@ namespace TwitchGames.TwitchChat.Services
 
         private void Client_OnLog(object? sender, OnLogArgs e)
         {
-            Console.WriteLine($"{e.DateTime}: {e.BotUsername} - {e.Data}");
+            _logger.LogInformation($"{e.DateTime}: {e.BotUsername} - {e.Data}");
         }
 
         private void Client_OnConnected(object? sender, OnConnectedArgs e)
         {
-            Console.WriteLine($"Connected to {e.AutoJoinChannel}");
+            _logger.LogInformation($"Connected to {e.AutoJoinChannel}");
         }
 
         private void Client_OnJoinedChannel(object? sender, OnJoinedChannelArgs e)
         {
-            Console.WriteLine("TwitchGames up and running!");
+            _logger.LogInformation("TwitchGames up and running!");
             _client.SendMessage(e.Channel, "TwitchGames up and running!");
         }
 
@@ -69,16 +67,13 @@ namespace TwitchGames.TwitchChat.Services
             switch (e.Command.CommandText)
             {
                 case ("join"):
-                    this._userRepository.Add(new User
-                    {
-                        TwitchId = e.Command.ChatMessage.UserId,
-                        DisplayName = e.Command.ChatMessage.DisplayName,
-                        ColorHex = e.Command.ChatMessage.ColorHex
-                    });
-                    this._unitOfWork.Complete();
+                    this._publishEndpoint.Publish(
+                        new AddTwitchUser(e.Command.ChatMessage.UserId,
+                                          e.Command.ChatMessage.DisplayName,
+                                          e.Command.ChatMessage.ColorHex));
 
 
-                    Console.WriteLine($"{e.Command.ChatMessage.DisplayName} joined the game!");
+                    _logger.LogInformation($"{e.Command.ChatMessage.DisplayName} joined the game!");
                     break;
                 default:
                     break;

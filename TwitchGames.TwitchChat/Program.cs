@@ -1,14 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 using System;
-using TwitchGames.Shared.UnitOfWorkLibrary.Extensions;
 using TwitchGames.TwitchChat.Models;
 using TwitchGames.TwitchChat.Services;
-using TwitchGames.Users.Dal.Entities;
-using TwitchGames.Users.Dal.Interfaces;
-using TwitchGames.Users.Dal.Repositories;
 
 namespace TwitchGames.TwitchChat
 {
@@ -16,33 +15,70 @@ namespace TwitchGames.TwitchChat
     {
         static void Main(string[] args)
         {
-            var config = GetConfiguration();
+            var host = CreateHostBuilder(args).Build();
+            IServiceProvider serviceProvider;
+            using (var scope = host.Services.CreateScope())
+            {
+                serviceProvider = scope.ServiceProvider;
+
+                var logger = serviceProvider.GetRequiredService<ILoggerFactory>()
+                    .CreateLogger<Program>();
+
+                logger.LogInformation("Starting application");
+
+                var bot = serviceProvider.GetRequiredService<IBot>();
+                bot.Connect();
+            }
+            host.Run();
+            //var config = GetConfiguration();
 
             //setup our DI
-            ServiceProvider serviceProvider = InitServiceProvider(config);
+            //ServiceProvider serviceProvider = InitServiceProvider(config);
 
             //configure console logging
-            serviceProvider
-                .GetRequiredService<ILoggerFactory>();
-
-            var logger = serviceProvider.GetRequiredService<ILoggerFactory>()
-                .CreateLogger<Program>();
-
-            logger.LogInformation("Starting application");
-            //var twitchConfig = config.GetSection("Twitch").Get<TwitchConfig>();
-
-            //var userDbContextFactory = new UserContextFactory();
-
-            var bot = serviceProvider.GetRequiredService<IBot>();
-            bot.Connect();
             //using (var dbContext = userDbContextFactory.CreateDbContext(Array.Empty<string>()))
             //{
             //    var bot = new Bot(config["Twitch:Username"], config["Twitch:AccessToken"], new UserRepository(dbContext), dbContext);
             //    Console.ReadLine();
             //}
 
-            Console.ReadLine();
+
+
+            //var busControl = Bus.Factory.CreateUsingInMemory(configure =>
+            //{
+            //    configure.ReceiveEndpoint("event-listener", endpoint =>
+            //    {
+            //        endpoint.Consumer<MessageConsumer>();
+            //    });
+            //});
+
+            //await busControl.StartAsync();
+            //var publishEndpoint = serviceProvider.GetRequiredService<IPublishEndpoint>();
+            //await publishEndpoint.Publish(new Message($"The time is {DateTimeOffset.Now}"));
         }
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseSerilog((context, services, configuration) => configuration
+                    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console()
+                    //.WriteTo.Http("http://localhost:5000")
+                )
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddMassTransit(x =>
+                    {
+                        x.UsingRabbitMq();
+                    })
+                   .AddMassTransitHostedService(true);
+
+                    services.AddScoped<IBot, Bot>()
+                    .AddScoped<ITwitchConfig>((x) =>
+                    {
+                        var config = GetConfiguration();
+                        return config.GetSection("Twitch").Get<TwitchConfig>();
+                    });
+                });
 
         private static IConfigurationRoot GetConfiguration()
         {
@@ -55,31 +91,5 @@ namespace TwitchGames.TwitchChat
             var config = builder.Build();
             return config;
         }
-
-        private static ServiceProvider InitServiceProvider(IConfigurationRoot config)
-        {
-            var serviceCollection = new ServiceCollection()
-                   .AddLogging(builder => builder.AddConsole())
-                   .AddUnitOfWorkServices<UserDbContext>()
-                   .AddScoped<IUserRepository, UserRepository>()
-                   .AddScoped<IBot, Bot>()
-                   .AddScoped<ITwitchConfig>((x) =>
-                   {
-                       var config = GetConfiguration();
-                       return config.GetSection("Twitch").Get<TwitchConfig>();
-                   })
-                   .AddDbContext<UserDbContext>(
-                       options => options.UseSqlite(config.GetConnectionString("Sqlite")));
-
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-
-            var userDbContext = serviceProvider.GetRequiredService<UserDbContext>();
-
-            userDbContext.Database.Migrate();
-            
-            return serviceProvider;
-        }
-
-
     }
 }
