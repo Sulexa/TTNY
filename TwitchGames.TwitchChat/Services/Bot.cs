@@ -1,7 +1,5 @@
-﻿using MassTransit;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
-using TwitchGames.Shared.Bus;
 using TwitchGames.TwitchChat.BotCommands;
 using TwitchGames.TwitchChat.Models;
 using TwitchLib.Client;

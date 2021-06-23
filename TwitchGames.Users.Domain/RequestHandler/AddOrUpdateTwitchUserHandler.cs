@@ -1,7 +1,9 @@
-﻿using MediatR;
+﻿using MassTransit;
+using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using TwitchGames.Shared.Bus;
 using TwitchGames.Shared.UnitOfWorkLibrary.Interfaces;
 using TwitchGames.Users.Dal.Entities.UserEntity;
 using TwitchGames.Users.Dal.Interfaces;
@@ -13,11 +15,13 @@ namespace TwitchGames.Users.Domain.RequestHandler
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public AddOrUpdateTwitchUserHandler(IUnitOfWork unitOfWork, IUserRepository userRepository)
+        public AddOrUpdateTwitchUserHandler(IUnitOfWork unitOfWork, IUserRepository userRepository, IPublishEndpoint publishEndpoint)
         {
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;
+            this._publishEndpoint = publishEndpoint;
         }
 
         public async Task<Guid> Handle(AddOrUpdateTwitchUserCommand request, CancellationToken cancellationToken)
@@ -41,6 +45,8 @@ namespace TwitchGames.Users.Domain.RequestHandler
             }
 
             await this._unitOfWork.CompleteAsync();
+
+            await this._publishEndpoint.Publish(new AddOrUpdateUser(user.UserId, user.DisplayName, user.ColorHex));
 
             return user.UserId;
         }

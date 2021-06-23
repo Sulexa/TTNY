@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>bb608887-27a8-497e-b1af-035f3257b6b6</UserSecretsId>
+    <UserSecretsId>8c2580e5-a42d-4e23-851e-a7ad70ab50b6</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -19,7 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TwitchGames.Shared.Bus\TwitchGames.Shared.Bus.csproj" />
-    <ProjectReference Include="..\TwitchGames.Users.Domain\TwitchGames.Users.Domain.csproj" />
+    <ProjectReference Include="..\TwitchGames.Shared.UnitOfWork\TwitchGames.Shared.UnitOfWork.csproj" />
+    <ProjectReference Include="..\TwitchGames.Ttny.Domain\TwitchGames.Ttny.Domain.csproj" />
   </ItemGroup>
 
 </Project>

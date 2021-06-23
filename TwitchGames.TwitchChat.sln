@@ -13,11 +13,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TwitchGames.Shared", "Twitc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.Shared.UnitOfWork", "TwitchGames.Shared.UnitOfWork\TwitchGames.Shared.UnitOfWork.csproj", "{F82CA7FF-54D0-4A42-83B1-86083D81E15D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Users.Api", "TwitchGames.Users.Api\TwitchGames.Users.Api.csproj", "{60DFBF36-ADF7-4041-A63F-9EA67F7382E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.Users.Api", "TwitchGames.Users.Api\TwitchGames.Users.Api.csproj", "{60DFBF36-ADF7-4041-A63F-9EA67F7382E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Users.Domain", "TwitchGames.Users.Domain\TwitchGames.Users.Domain.csproj", "{194C92FE-E44D-41B3-B448-516EDE82907C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.Users.Domain", "TwitchGames.Users.Domain\TwitchGames.Users.Domain.csproj", "{194C92FE-E44D-41B3-B448-516EDE82907C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Shared.Bus", "TwitchGames.Shared.Bus\TwitchGames.Shared.Bus.csproj", "{36748F14-B55D-4E14-A708-94BB77FA4049}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.Shared.Bus", "TwitchGames.Shared.Bus\TwitchGames.Shared.Bus.csproj", "{36748F14-B55D-4E14-A708-94BB77FA4049}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TwitchGames.Ttny", "TwitchGames.Ttny", "{20F1C8AA-486D-45B9-A312-A612B167C042}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Ttny.Api", "TwitchGames.Ttny.Api\TwitchGames.Ttny.Api.csproj", "{9C8309C6-D175-449F-8BE6-1A1347D04D3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Ttny.Dal", "TwitchGames.Ttny.Dal\TwitchGames.Ttny.Dal.csproj", "{94B82A8D-31E3-4B7E-8422-E47E07BC9C9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Ttny.Domain", "TwitchGames.Ttny.Domain\TwitchGames.Ttny.Domain.csproj", "{1075D79E-1260-4016-A975-190CD732396C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Shared.BaseRepository", "TwitchGames.Shared.BaseRepository\TwitchGames.Shared.BaseRepository.csproj", "{58048242-6131-46F6-9D3C-98C6C9FAAE5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +59,22 @@ Global
 		{36748F14-B55D-4E14-A708-94BB77FA4049}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36748F14-B55D-4E14-A708-94BB77FA4049}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36748F14-B55D-4E14-A708-94BB77FA4049}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C8309C6-D175-449F-8BE6-1A1347D04D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C8309C6-D175-449F-8BE6-1A1347D04D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C8309C6-D175-449F-8BE6-1A1347D04D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C8309C6-D175-449F-8BE6-1A1347D04D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94B82A8D-31E3-4B7E-8422-E47E07BC9C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94B82A8D-31E3-4B7E-8422-E47E07BC9C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94B82A8D-31E3-4B7E-8422-E47E07BC9C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94B82A8D-31E3-4B7E-8422-E47E07BC9C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1075D79E-1260-4016-A975-190CD732396C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1075D79E-1260-4016-A975-190CD732396C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1075D79E-1260-4016-A975-190CD732396C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1075D79E-1260-4016-A975-190CD732396C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58048242-6131-46F6-9D3C-98C6C9FAAE5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58048242-6131-46F6-9D3C-98C6C9FAAE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58048242-6131-46F6-9D3C-98C6C9FAAE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58048242-6131-46F6-9D3C-98C6C9FAAE5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +85,10 @@ Global
 		{60DFBF36-ADF7-4041-A63F-9EA67F7382E1} = {D9DA834F-D3EB-4EE8-8878-9E805F6C76B8}
 		{194C92FE-E44D-41B3-B448-516EDE82907C} = {D9DA834F-D3EB-4EE8-8878-9E805F6C76B8}
 		{36748F14-B55D-4E14-A708-94BB77FA4049} = {C6F331E1-1001-4A8B-BB72-951D054DE716}
+		{9C8309C6-D175-449F-8BE6-1A1347D04D3F} = {20F1C8AA-486D-45B9-A312-A612B167C042}
+		{94B82A8D-31E3-4B7E-8422-E47E07BC9C9B} = {20F1C8AA-486D-45B9-A312-A612B167C042}
+		{1075D79E-1260-4016-A975-190CD732396C} = {20F1C8AA-486D-45B9-A312-A612B167C042}
+		{58048242-6131-46F6-9D3C-98C6C9FAAE5F} = {C6F331E1-1001-4A8B-BB72-951D054DE716}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FFFC01A6-846E-4098-B22C-81E4D4B38FA4}

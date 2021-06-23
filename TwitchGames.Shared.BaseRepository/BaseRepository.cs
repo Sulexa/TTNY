@@ -1,17 +1,15 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using TwitchGames.Users.Dal.Entities;
-using TwitchGames.Users.Dal.Interfaces;
-
-namespace TwitchGames.Users.Dal.Repositories
+namespace TwitchGames.Shared.BaseRepositoryLibrary
 {
-    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
+    public abstract class BaseRepository<TEntity, TDbContext> : IBaseRepository<TEntity, TDbContext> where TEntity : class, new() where TDbContext: DbContext
     {
-        protected readonly UserDbContext _context;
+        protected readonly TDbContext _context;
 
-        protected BaseRepository(UserDbContext context)
+        protected BaseRepository(TDbContext context)
         {
             _context = context;
         }

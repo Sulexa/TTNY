@@ -19,12 +19,17 @@ namespace TwitchGames.TwitchChat.BotCommands
 
             _commandDictionnary = new Dictionary<string, Action<Guid, BotCommandDto>>()
             {
-                { "join", async (userId, botCommandDto) => {await ttnyJoinTownCommandHandler.Handle(userId, botCommandDto); } }
+                { "ttny_join", async (userId, botCommandDto) => {await ttnyJoinTownCommandHandler.Handle(userId, botCommandDto); } }
             };
         }
 
         public async Task ExecuteCommandAsync(string commandName, BotCommandDto botCommandeDto)
         {
+            if (!this._commandDictionnary.ContainsKey(commandName))
+            {
+                return;
+            }
+
             Guid twitchUserId = await AddOrUpdateTwitchUser(botCommandeDto);
 
             this._commandDictionnary[commandName](twitchUserId, botCommandeDto);

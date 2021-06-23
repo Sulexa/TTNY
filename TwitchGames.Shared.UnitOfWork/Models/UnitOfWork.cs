@@ -23,15 +23,6 @@ namespace TwitchGames.Shared.UnitOfWorkLibrary.Models
         }
 
         /// <summary>
-        /// Do a save change on all change done
-        /// </summary>
-        /// <returns></returns>
-        public void Complete()
-        {
-            _context.SaveChanges();
-        }
-
-        /// <summary>
         /// Detaches all of the DbEntityEntry objects that have been added to the ChangeTracker.
         /// </summary>
         public void DetachAll()

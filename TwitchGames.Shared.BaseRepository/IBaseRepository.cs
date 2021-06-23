@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace TwitchGames.Users.Dal.Interfaces
+namespace TwitchGames.Shared.BaseRepositoryLibrary
 {
-    public interface IBaseRepository<TEntity> where TEntity : class, new()
+    public interface IBaseRepository<TEntity, TDbContext> where TEntity : class, new()
     {
         TEntity GetById(Guid id);
         IEnumerable<TEntity> GetAll();

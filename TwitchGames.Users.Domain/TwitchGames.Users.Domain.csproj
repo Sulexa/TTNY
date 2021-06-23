@@ -1,15 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TwitchGames.Shared.Bus\TwitchGames.Shared.Bus.csproj" />
     <ProjectReference Include="..\TwitchGames.Shared.UnitOfWork\TwitchGames.Shared.UnitOfWork.csproj" />
     <ProjectReference Include="..\TwitchGames.Users.Dal\TwitchGames.Users.Dal.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="7.2.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
   </ItemGroup>
 
