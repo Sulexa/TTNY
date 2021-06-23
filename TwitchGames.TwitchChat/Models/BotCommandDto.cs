@@ -1,14 +1,12 @@
-﻿using MediatR;
-
-namespace TwitchGames.Users.Domain.Request
+﻿namespace TwitchGames.TwitchChat.Models
 {
-    public class AddTwitchUserCommand : IRequest
+    public class BotCommandDto
     {
         public string TwitchId { get; set; }
         public string DisplayName { get; set; }
         public string ColorHex { get; set; }
 
-        public AddTwitchUserCommand(string twitchId, string displayName, string colorHex)
+        public BotCommandDto(string twitchId, string displayName, string colorHex)
         {
             TwitchId = twitchId;
             DisplayName = displayName;

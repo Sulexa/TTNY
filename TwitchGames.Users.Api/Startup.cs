@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using TwitchGames.Shared.Bus;
 using TwitchGames.Shared.UnitOfWorkLibrary.Extensions;
 using TwitchGames.Users.Api.Consumers;
 using TwitchGames.Users.Dal.Entities;
@@ -39,18 +40,21 @@ namespace TwitchGames.Users.Api
             services.AddDbContext<UserDbContext>(
                 options => options.UseSqlite(Configuration.GetConnectionString("Sqlite")));
 
-            services.AddMediatR(typeof(AddTwitchUserHandler).Assembly);
+            services.AddMediatR(typeof(AddOrUpdateTwitchUserHandler).Assembly);
             services.AddMassTransit(x =>
             {
-                x.AddConsumer<AddTwitchUserConsumer>();
+                x.AddConsumer<AddOrUpdateTwitchUserConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.ReceiveEndpoint("add-twitch-user-listener", e =>
+                    cfg.ReceiveEndpoint("add-or-update-twitch-user-listener", e =>
                     {
-                        e.ConfigureConsumer<AddTwitchUserConsumer>(context);
+                        e.ConfigureConsumer<AddOrUpdateTwitchUserConsumer>(context);
                     });
                 });
+
+                x.AddRequestClient<AddOrUpdateTwitchUser>();
+
             });
 
             services.AddMassTransitHostedService();

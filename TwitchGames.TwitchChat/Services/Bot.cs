@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using TwitchGames.Shared.Bus;
+using TwitchGames.TwitchChat.BotCommands;
 using TwitchGames.TwitchChat.Models;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
@@ -13,24 +14,33 @@ namespace TwitchGames.TwitchChat.Services
 {
     public class Bot: IBot
     {
+        private const int MESSAGE_ALLOWED_IN_PERDIOD = 750;
+        private const int THROTTLING_PERIOD = 30;
+
         private readonly TwitchClient _client;
         private readonly ITwitchConfig _twitchConfig;
         private readonly ILogger<Bot> _logger;
-        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IBotCommandHandler _botCommandHandler;
 
-        public Bot(ITwitchConfig twitchConfig, ILogger<Bot> logger, IPublishEndpoint publishEndpoint)
+        public Bot(ITwitchConfig twitchConfig, ILogger<Bot> logger, IBotCommandHandler botCommandHandler)
         {
             this._twitchConfig = twitchConfig;
             this._logger = logger;
-            this._publishEndpoint = publishEndpoint;
+            _botCommandHandler = botCommandHandler;
 
+            var customClient = GetWebSocketClient();
+            _client = new TwitchClient(customClient);
+        }
+
+        private static WebSocketClient GetWebSocketClient()
+        {
             var clientOptions = new ClientOptions
             {
-                MessagesAllowedInPeriod = 750,
-                ThrottlingPeriod = TimeSpan.FromSeconds(30)
+                MessagesAllowedInPeriod = MESSAGE_ALLOWED_IN_PERDIOD,
+                ThrottlingPeriod = TimeSpan.FromSeconds(THROTTLING_PERIOD)
             };
             WebSocketClient customClient = new(clientOptions);
-            _client = new TwitchClient(customClient);
+            return customClient;
         }
 
         public void Connect()
@@ -62,45 +72,13 @@ namespace TwitchGames.TwitchChat.Services
             _client.SendMessage(e.Channel, "TwitchGames up and running!");
         }
 
-        private void Client_OnChatCommandReceived(object? sender, OnChatCommandReceivedArgs e)
+        private async void Client_OnChatCommandReceived(object? sender, OnChatCommandReceivedArgs e)
         {
-            switch (e.Command.CommandText)
-            {
-                case ("join"):
-                    this._publishEndpoint.Publish(
-                        new AddTwitchUser(e.Command.ChatMessage.UserId,
-                                          e.Command.ChatMessage.DisplayName,
-                                          e.Command.ChatMessage.ColorHex));
-
-
-                    _logger.LogInformation($"{e.Command.ChatMessage.DisplayName} joined the game!");
-                    break;
-                default:
-                    break;
-            }
-            //if (e.ChatMessage.Message.Contains("badword"))
-            //    _client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
+            await this._botCommandHandler.ExecuteCommandAsync(e.Command.CommandText, new BotCommandDto(
+                            e.Command.ChatMessage.UserId,
+                            e.Command.ChatMessage.DisplayName,
+                            e.Command.ChatMessage.ColorHex));
         }
 
-        //private void Client_OnMessageReceived(object sender, OnMessageReceivedArgs e)
-        //{
-        //    Console.WriteLine(e.ChatMessage.Message);
-        //    //if (e.ChatMessage.Message.Contains("badword"))
-        //    //    _client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
-        //}
-
-        //private void Client_OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
-        //{
-        //    if (e.WhisperMessage.Username == "my_friend")
-        //        _client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!");
-        //}
-
-        //private void Client_OnNewSubscriber(object sender, OnNewSubscriberArgs e)
-        //{
-        //    if (e.Subscriber.SubscriptionPlan == SubscriptionPlan.Prime)
-        //        _client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
-        //    else
-        //        _client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
-        //}
     }
 }

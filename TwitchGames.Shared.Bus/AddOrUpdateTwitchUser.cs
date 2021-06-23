@@ -1,12 +1,12 @@
 ﻿namespace TwitchGames.Shared.Bus
 {
-    public class AddTwitchUser
+    public class AddOrUpdateTwitchUser
     {
         public string TwitchId { get; set; }
         public string DisplayName { get; set; }
         public string ColorHex { get; set; }
 
-        public AddTwitchUser(string twitchId, string displayName, string colorHex)
+        public AddOrUpdateTwitchUser(string twitchId, string displayName, string colorHex)
         {
             TwitchId = twitchId;
             DisplayName = displayName;

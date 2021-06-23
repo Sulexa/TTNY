@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -6,6 +7,9 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using System;
+using TwitchGames.Shared.Bus;
+using TwitchGames.TwitchChat.BotCommands;
+using TwitchGames.TwitchChat.BotCommands.Ttny;
 using TwitchGames.TwitchChat.Models;
 using TwitchGames.TwitchChat.Services;
 
@@ -30,32 +34,8 @@ namespace TwitchGames.TwitchChat
                 bot.Connect();
             }
             host.Run();
-            //var config = GetConfiguration();
-
-            //setup our DI
-            //ServiceProvider serviceProvider = InitServiceProvider(config);
-
-            //configure console logging
-            //using (var dbContext = userDbContextFactory.CreateDbContext(Array.Empty<string>()))
-            //{
-            //    var bot = new Bot(config["Twitch:Username"], config["Twitch:AccessToken"], new UserRepository(dbContext), dbContext);
-            //    Console.ReadLine();
-            //}
-
-
-
-            //var busControl = Bus.Factory.CreateUsingInMemory(configure =>
-            //{
-            //    configure.ReceiveEndpoint("event-listener", endpoint =>
-            //    {
-            //        endpoint.Consumer<MessageConsumer>();
-            //    });
-            //});
-
-            //await busControl.StartAsync();
-            //var publishEndpoint = serviceProvider.GetRequiredService<IPublishEndpoint>();
-            //await publishEndpoint.Publish(new Message($"The time is {DateTimeOffset.Now}"));
         }
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseSerilog((context, services, configuration) => configuration
@@ -69,15 +49,19 @@ namespace TwitchGames.TwitchChat
                     services.AddMassTransit(x =>
                     {
                         x.UsingRabbitMq();
+                        x.AddRequestClient<AddOrUpdateTwitchUser>();
                     })
                    .AddMassTransitHostedService(true);
 
                     services.AddScoped<IBot, Bot>()
+                    .AddScoped<IBotCommandHandler, BotCommandHandler>()
+                    .AddScoped<ITtnyJoinTownCommandHandler, TtnyJoinTownCommandHandler>()
                     .AddScoped<ITwitchConfig>((x) =>
                     {
                         var config = GetConfiguration();
                         return config.GetSection("Twitch").Get<TwitchConfig>();
                     });
+                    services.AddMediatR(typeof(TtnyJoinTownCommandHandler));
                 });
 
         private static IConfigurationRoot GetConfiguration()
