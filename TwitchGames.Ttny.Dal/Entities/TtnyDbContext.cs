@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using TwitchGames.Ttny.Dal.Entities.TownEntity;
 using TwitchGames.Ttny.Dal.Entities.TownEventEntity;
 using TwitchGames.Ttny.Dal.Entities.TownUserEntity;
@@ -18,24 +17,11 @@ namespace TwitchGames.Ttny.Dal.Entities
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite(@"Data Source=D:\\ttny.db");
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             new TownUserEntityTypeConfiguration().Configure(modelBuilder.Entity<TownUser>());
             //new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<User>());
-        }
-    }
-    public class TtnyContextFactory : IDesignTimeDbContextFactory<TtnyDbContext>
-    {
-        public TtnyDbContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<TtnyDbContext>();
-            optionsBuilder.UseSqlite("Data Source=D:\\ttny.db");
-
-            return new TtnyDbContext(optionsBuilder.Options);
         }
     }
 }

@@ -21,13 +21,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.Shared.Bus", "T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TwitchGames.Ttny", "TwitchGames.Ttny", "{20F1C8AA-486D-45B9-A312-A612B167C042}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Ttny.Api", "TwitchGames.Ttny.Api\TwitchGames.Ttny.Api.csproj", "{9C8309C6-D175-449F-8BE6-1A1347D04D3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.Ttny.Api", "TwitchGames.Ttny.Api\TwitchGames.Ttny.Api.csproj", "{9C8309C6-D175-449F-8BE6-1A1347D04D3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Ttny.Dal", "TwitchGames.Ttny.Dal\TwitchGames.Ttny.Dal.csproj", "{94B82A8D-31E3-4B7E-8422-E47E07BC9C9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.Ttny.Dal", "TwitchGames.Ttny.Dal\TwitchGames.Ttny.Dal.csproj", "{94B82A8D-31E3-4B7E-8422-E47E07BC9C9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Ttny.Domain", "TwitchGames.Ttny.Domain\TwitchGames.Ttny.Domain.csproj", "{1075D79E-1260-4016-A975-190CD732396C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.Ttny.Domain", "TwitchGames.Ttny.Domain\TwitchGames.Ttny.Domain.csproj", "{1075D79E-1260-4016-A975-190CD732396C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchGames.Shared.BaseRepository", "TwitchGames.Shared.BaseRepository\TwitchGames.Shared.BaseRepository.csproj", "{58048242-6131-46F6-9D3C-98C6C9FAAE5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchGames.Shared.BaseRepository", "TwitchGames.Shared.BaseRepository\TwitchGames.Shared.BaseRepository.csproj", "{58048242-6131-46F6-9D3C-98C6C9FAAE5F}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7CFC2D1C-7B51-4141-ACA8-4BAA11F5F47B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{58048242-6131-46F6-9D3C-98C6C9FAAE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58048242-6131-46F6-9D3C-98C6C9FAAE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58048242-6131-46F6-9D3C-98C6C9FAAE5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CFC2D1C-7B51-4141-ACA8-4BAA11F5F47B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CFC2D1C-7B51-4141-ACA8-4BAA11F5F47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CFC2D1C-7B51-4141-ACA8-4BAA11F5F47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CFC2D1C-7B51-4141-ACA8-4BAA11F5F47B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,11 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["TwitchGames.Users.Api/TwitchGames.Users.Api.csproj", "TwitchGames.Users.Api/"]
-COPY ["TwitchGames.Shared.Bus/TwitchGames.Shared.Bus.csproj", "TwitchGames.Shared.Bus/"]
-COPY ["TwitchGames.Users.Domain/TwitchGames.Users.Domain.csproj", "TwitchGames.Users.Domain/"]
-COPY ["TwitchGames.Users.Dal/TwitchGames.Users.Dal.csproj", "TwitchGames.Users.Dal/"]
-COPY ["TwitchGames.Shared.BaseRepository/TwitchGames.Shared.BaseRepository.csproj", "TwitchGames.Shared.BaseRepository/"]
-COPY ["TwitchGames.Shared.UnitOfWork/TwitchGames.Shared.UnitOfWork.csproj", "TwitchGames.Shared.UnitOfWork/"]
 RUN dotnet restore "TwitchGames.Users.Api/TwitchGames.Users.Api.csproj"
 COPY . .
 WORKDIR "/src/TwitchGames.Users.Api"

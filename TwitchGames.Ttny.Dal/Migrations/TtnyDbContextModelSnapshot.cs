@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TwitchGames.Ttny.Dal.Entities;
 
@@ -14,28 +15,30 @@ namespace TwitchGames.Ttny.Dal.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.7");
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("TwitchGames.Ttny.Dal.Entities.TownEntity.Town", b =>
                 {
                     b.Property<Guid>("TownId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Alive")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
-                    b.Property<uint>("Defense")
-                        .HasColumnType("INTEGER");
+                    b.Property<long>("Defense")
+                        .HasColumnType("bigint");
 
-                    b.Property<uint>("Food")
-                        .HasColumnType("INTEGER");
+                    b.Property<long>("Food")
+                        .HasColumnType("bigint");
 
-                    b.Property<uint>("NextAttackSize")
-                        .HasColumnType("INTEGER");
+                    b.Property<long>("NextAttackSize")
+                        .HasColumnType("bigint");
 
-                    b.Property<uint>("Wood")
-                        .HasColumnType("INTEGER");
+                    b.Property<long>("Wood")
+                        .HasColumnType("bigint");
 
                     b.HasKey("TownId");
 
@@ -46,17 +49,17 @@ namespace TwitchGames.Ttny.Dal.Migrations
                 {
                     b.Property<Guid>("TownEventId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TownId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("TownEventId");
 
@@ -70,16 +73,16 @@ namespace TwitchGames.Ttny.Dal.Migrations
             modelBuilder.Entity("TwitchGames.Ttny.Dal.Entities.TownUserEntity.TownUser", b =>
                 {
                     b.Property<Guid>("TownId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Alive")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
                     b.Property<bool>("HaveAction")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
                     b.HasKey("TownId", "UserId");
 
@@ -92,15 +95,15 @@ namespace TwitchGames.Ttny.Dal.Migrations
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ColorHex")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
 

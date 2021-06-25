@@ -11,12 +11,12 @@ namespace TwitchGames.Ttny.Dal.Migrations
                 name: "Towns",
                 columns: table => new
                 {
-                    TownId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Wood = table.Column<uint>(type: "INTEGER", nullable: false),
-                    Food = table.Column<uint>(type: "INTEGER", nullable: false),
-                    Defense = table.Column<uint>(type: "INTEGER", nullable: false),
-                    NextAttackSize = table.Column<uint>(type: "INTEGER", nullable: false),
-                    Alive = table.Column<bool>(type: "INTEGER", nullable: false)
+                    TownId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Wood = table.Column<long>(type: "bigint", nullable: false),
+                    Food = table.Column<long>(type: "bigint", nullable: false),
+                    Defense = table.Column<long>(type: "bigint", nullable: false),
+                    NextAttackSize = table.Column<long>(type: "bigint", nullable: false),
+                    Alive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,9 +27,9 @@ namespace TwitchGames.Ttny.Dal.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    DisplayName = table.Column<string>(type: "TEXT", nullable: false),
-                    ColorHex = table.Column<string>(type: "TEXT", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ColorHex = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,10 +40,10 @@ namespace TwitchGames.Ttny.Dal.Migrations
                 name: "TownEvents",
                 columns: table => new
                 {
-                    TownEventId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    TownId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    Message = table.Column<string>(type: "TEXT", nullable: false)
+                    TownEventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TownId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,10 +66,10 @@ namespace TwitchGames.Ttny.Dal.Migrations
                 name: "TownUsers",
                 columns: table => new
                 {
-                    TownId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Alive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    HaveAction = table.Column<bool>(type: "INTEGER", nullable: false)
+                    TownId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Alive = table.Column<bool>(type: "bit", nullable: false),
+                    HaveAction = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

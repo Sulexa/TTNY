@@ -36,22 +36,23 @@ namespace TwitchGames.TwitchChat
             host.Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .UseSerilog((context, services, configuration) => configuration
-                    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                    .Enrich.FromLogContext()
-                    .WriteTo.Console()
-                    //.WriteTo.Http("http://localhost:5000")
-                )
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(GetConfiguration()).CreateLogger();
+
+            return Host.CreateDefaultBuilder(args)
+                .UseSerilog()
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddMassTransit(x =>
                     {
-                        x.UsingRabbitMq();
+                        x.UsingRabbitMq((context, cfg) =>
+                    {
+                        cfg.Host(GetConfiguration().GetConnectionString("RabbitMq"));
+                    });
                         x.AddRequestClient<AddOrUpdateTwitchUser>();
                     })
-                   .AddMassTransitHostedService(true);
+                    .AddMassTransitHostedService(true);
 
                     services.AddScoped<IBot, Bot>()
                     .AddScoped<IBotCommandHandler, BotCommandHandler>()
@@ -63,6 +64,7 @@ namespace TwitchGames.TwitchChat
                     });
                     services.AddMediatR(typeof(TtnyJoinTownCommandHandler));
                 });
+        }
 
         private static IConfigurationRoot GetConfiguration()
         {

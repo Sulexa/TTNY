@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  twitchgames.twitchchat:
+    image: ${DOCKER_REGISTRY-}twitchgamestwitchchat
+    build:
+      context: .
+      dockerfile: TwitchGames.TwitchChat/Dockerfile
+
+  twitchgames.users.api:
+    image: ${DOCKER_REGISTRY-}twitchgamesusersapi
+    build:
+      context: .
+      dockerfile: TwitchGames.Users.Api/Dockerfile
+
+  twitchgames.ttny.api:
+    image: ${DOCKER_REGISTRY-}twitchgamesttnyapi
+    build:
+      context: .
+      dockerfile: TwitchGames.Ttny.Api/Dockerfile
+
+  twitchgames.rabbitmq:
+    container_name: twitchgames.rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+
+  twitchgames.sqlserver:
+    container_name: twitchgames.sqlserver
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=w3%SW3ZJbcEu
+    ports:
+      - 1433:1433
+
+  twitchgames.seq:
+    container_name: twitchgames.seq
+    image: datalust/seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - 5340:80

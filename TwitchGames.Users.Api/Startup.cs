@@ -38,7 +38,7 @@ namespace TwitchGames.Users.Api
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddDbContext<UserDbContext>(
-                options => options.UseSqlite(Configuration.GetConnectionString("Sqlite")));
+                options => options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
 
             services.AddMediatR(typeof(AddOrUpdateTwitchUserHandler).Assembly);
             services.AddMassTransit(x =>
@@ -47,6 +47,8 @@ namespace TwitchGames.Users.Api
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
+                    cfg.Host(Configuration.GetConnectionString("RabbitMq"));
+
                     cfg.ReceiveEndpoint("add-or-update-twitch-user-listener", e =>
                     {
                         e.ConfigureConsumer<AddOrUpdateTwitchUserConsumer>(context);

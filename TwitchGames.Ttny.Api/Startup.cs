@@ -23,7 +23,6 @@ namespace TwitchGames.Ttny.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -33,7 +32,7 @@ namespace TwitchGames.Ttny.Api
             //services.AddUnitOfWorkServices<UserDbContext>();
 
             services.AddDbContext<TtnyDbContext>(
-                options => options.UseSqlite(Configuration.GetConnectionString("Sqlite")));
+                options => options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
 
             //services.AddMediatR(typeof(AddOrUpdateTwitchUserHandler).Assembly);
             services.AddMassTransit(x =>
@@ -42,10 +41,8 @@ namespace TwitchGames.Ttny.Api
                 x.AddConsumer<AddOrUpdateUserConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    //cfg.ReceiveEndpoint("add-or-update-twitch-user-listener", e =>
-                    //{
-                    //    e.ConfigureConsumer<AddOrUpdateTwitchUserConsumer>(context);
-                    //});
+                    cfg.Host(Configuration.GetConnectionString("RabbitMq"));
+
                     cfg.ReceiveEndpoint("add-or-update-user-listener", e =>
                     {
                         e.ConfigureConsumer<AddOrUpdateUserConsumer>(context);
