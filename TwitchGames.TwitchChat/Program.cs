@@ -1,11 +1,9 @@
-﻿using MassTransit;
-using MediatR;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Events;
 using System;
 using TwitchGames.Shared.Bus;
 using TwitchGames.TwitchChat.BotCommands;
@@ -62,7 +60,6 @@ namespace TwitchGames.TwitchChat
                         var config = GetConfiguration();
                         return config.GetSection("Twitch").Get<TwitchConfig>();
                     });
-                    services.AddMediatR(typeof(TtnyJoinTownCommandHandler));
                 });
         }
 
