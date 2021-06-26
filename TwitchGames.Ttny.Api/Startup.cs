@@ -1,4 +1,5 @@
 using MassTransit;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,8 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using TwitchGames.Shared.UnitOfWorkLibrary.Extensions;
 using TwitchGames.Ttny.Api.Consumers;
 using TwitchGames.Ttny.Dal.Entities;
+using TwitchGames.Ttny.Dal.Extensions;
+using TwitchGames.Ttny.Domain.RequestHandler;
 
 namespace TwitchGames.Ttny.Api
 {
@@ -29,28 +33,28 @@ namespace TwitchGames.Ttny.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TwitchGames.Ttny.Api", Version = "v1" });
             });
 
-            //services.AddUnitOfWorkServices<UserDbContext>();
 
             services.AddDbContext<TtnyDbContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+            services.AddUnitOfWorkServices<TtnyDbContext>();
+            services.AddRepositories();
 
-            //services.AddMediatR(typeof(AddOrUpdateTwitchUserHandler).Assembly);
+            services.AddMediatR(typeof(AttackCommandHandler).Assembly);
+
             services.AddMassTransit(x =>
             {
-                //x.AddConsumer<AddOrUpdateTwitchUserConsumer>();
                 x.AddConsumer<AddOrUpdateUserConsumer>();
+                x.AddConsumer<CollectConsumer>();
+                x.AddConsumer<JoinTownConsumer>();
+                x.AddConsumer<UpgradeDefenseConsumer>();
+
+                x.SetKebabCaseEndpointNameFormatter();
+
                 x.UsingRabbitMq((context, cfg) =>
                 {
+                    cfg.ConfigureEndpoints(context);
                     cfg.Host(Configuration.GetConnectionString("RabbitMq"));
-
-                    cfg.ReceiveEndpoint("add-or-update-user-listener", e =>
-                    {
-                        e.ConfigureConsumer<AddOrUpdateUserConsumer>(context);
-                    });
                 });
-
-                //x.AddRequestClient<AddOrUpdateTwitchUser>();
-
             });
 
             services.AddMassTransitHostedService();

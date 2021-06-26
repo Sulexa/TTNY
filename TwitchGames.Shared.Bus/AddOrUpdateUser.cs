@@ -2,9 +2,8 @@
 
 namespace TwitchGames.Shared.Bus
 {
-    public class AddOrUpdateUser
+    public class AddOrUpdateUser: UserIdentifierBase
     {
-        public Guid UserId { get; set; }
         public string DisplayName { get; set; }
         public string ColorHex { get; set; }
 

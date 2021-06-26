@@ -45,14 +45,12 @@ namespace TwitchGames.Users.Api
             {
                 x.AddConsumer<AddOrUpdateTwitchUserConsumer>();
 
+                x.SetKebabCaseEndpointNameFormatter();
+
                 x.UsingRabbitMq((context, cfg) =>
                 {
+                    cfg.ConfigureEndpoints(context);
                     cfg.Host(Configuration.GetConnectionString("RabbitMq"));
-
-                    cfg.ReceiveEndpoint("add-or-update-twitch-user-listener", e =>
-                    {
-                        e.ConfigureConsumer<AddOrUpdateTwitchUserConsumer>(context);
-                    });
                 });
 
                 x.AddRequestClient<AddOrUpdateTwitchUser>();
